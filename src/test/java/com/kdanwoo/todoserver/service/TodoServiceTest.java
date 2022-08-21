@@ -49,4 +49,21 @@ class TodoServiceTest {
     Assertions.assertThat(savedEntity.getId()).isEqualTo(findEntity.getId());
 
   }
+
+  @Test
+  public void updateTest(){
+    TodoRequest request = TodoRequest.builder()
+        .title("제목")
+        .order(1L)
+        .completed(false)
+        .build();
+
+    TodoEntity savedEntity = todoService.add(request);
+
+    TodoEntity updatedEntity = todoService.updateById(savedEntity.getId(), new TodoRequest("제목2", null, null));
+
+    Assertions.assertThat(savedEntity.getId()).isEqualTo(updatedEntity.getId());
+
+
+  }
 }

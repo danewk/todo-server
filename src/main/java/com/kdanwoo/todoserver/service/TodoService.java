@@ -37,12 +37,24 @@ public class TodoService {
         .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
   }
 
-  public List<TodoResponse> searchAll() {
-    return null;
+  public List<TodoEntity> searchAll() {
+    return todoRepository.findAll();
   }
 
-  public TodoEntity udpateById(Long id) {
-    return null;
+  @Transactional
+  public TodoEntity updateById(Long id, TodoRequest request) {
+    TodoEntity todoEntity = searchById(id);
+
+    if(request.getTitle() != null){
+      todoEntity.setTitle(request.getTitle());
+    }
+    if(request.getOrder() != null){
+      todoEntity.setOrder(request.getOrder());
+    }
+    if(request.getCompleted() != null){
+      todoEntity.setCompleted(request.getCompleted());
+    }
+    return todoEntity;
   }
 
   public void deleteById(Long id) {
