@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.kdanwoo.todoserver.model.TodoEntity;
 import com.kdanwoo.todoserver.model.TodoRequest;
+import com.kdanwoo.todoserver.model.TodoResponse;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ class TodoServiceTest {
   TodoService todoService;
 
   @Test
-  void add() {
+  public void add() {
     TodoRequest request = TodoRequest.builder()
         .title("제목")
         .order(1L)
@@ -30,6 +31,22 @@ class TodoServiceTest {
     TodoEntity savedEntity = todoService.add(request);
 
     Assertions.assertThat(savedEntity.getTitle()).isEqualTo("제목");
+
+  }
+
+  @Test
+  public void searchTest(){
+    TodoRequest request = TodoRequest.builder()
+        .title("제목")
+        .order(1L)
+        .completed(false)
+        .build();
+
+    TodoEntity savedEntity = todoService.add(request);
+    TodoEntity findEntity = todoService.searchById(savedEntity.getId());
+
+
+    Assertions.assertThat(savedEntity.getId()).isEqualTo(findEntity.getId());
 
   }
 }

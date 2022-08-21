@@ -5,9 +5,13 @@ import com.kdanwoo.todoserver.model.TodoRequest;
 import com.kdanwoo.todoserver.model.TodoResponse;
 import com.kdanwoo.todoserver.repository.TodoRepository;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
@@ -24,27 +28,28 @@ public class TodoService {
    * todo 리스트 전체 목록을 삭제
    */
   @Transactional
-  public TodoEntity add(TodoRequest request){
+  public TodoEntity add(TodoRequest request) {
     return todoRepository.save(TodoRequest.toEntity(request));
   }
 
-  public TodoResponse searchById(Long id){
+  public TodoEntity searchById(Long id) {
+    return todoRepository.findById(id)
+        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+  }
+
+  public List<TodoResponse> searchAll() {
     return null;
   }
 
-  public List<TodoResponse> searchAll(){
+  public TodoEntity udpateById(Long id) {
     return null;
   }
 
-  public TodoEntity udpateById(Long id){
-    return null;
-  }
-
-  public void deleteById(Long id){
+  public void deleteById(Long id) {
 
   }
 
-  public void deleteAll(){
+  public void deleteAll() {
 
   }
 

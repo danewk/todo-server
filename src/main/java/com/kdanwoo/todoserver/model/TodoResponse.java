@@ -1,6 +1,7 @@
 package com.kdanwoo.todoserver.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,7 +10,10 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class TodoResponse {
+
+  private static final String URL = "http://localhost:8080/";
 
   private Long id;
   private String title;
@@ -17,11 +21,13 @@ public class TodoResponse {
   private Boolean completed;
   private String url;
 
-  public TodoResponse(TodoEntity todoEntity) {
-    this.id = todoEntity.getId();
-    this.title = todoEntity.getTitle();
-    this.order = todoEntity.getOrder();
-    this.completed = todoEntity.getCompleted();
-    this.url = "http://localhost:8080/" + this.id;
+  public static TodoResponse toDto(TodoEntity todoEntity) {
+    return TodoResponse.builder()
+        .id(todoEntity.getId())
+        .title(todoEntity.getTitle())
+        .order(todoEntity.getOrder())
+        .completed(todoEntity.getCompleted())
+        .url(URL + todoEntity.getId())
+        .build();
   }
 }
